@@ -46,12 +46,17 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// Static files and EJS configuration
+app.use((req, res, next) => {
+  res.locals.timestamp = new Date().toISOString();
+  next();
+});
+
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
 
-// Make NODE_ENV available to every EJS template
+
 app.use((req, res, next) => {
   res.locals.NODE_ENV = NODE_ENV;
   next();
@@ -73,14 +78,14 @@ app.get('/products', (req, res) => {
   res.render('products', { title });
 });
 
-// Test route for a 500 error
+
 app.get('/test-error', (req, res, next) => {
   const err = new Error('This is a test error');
   err.status = 500;
   next(err);
 });
 
-// Course catalog list page
+
 app.get('/catalog', (req, res) => {
   res.render('catalog', {
     title: 'Course Catalog',
@@ -88,7 +93,7 @@ app.get('/catalog', (req, res) => {
   });
 });
 
-// Course detail page with sorting
+
 app.get('/catalog/:courseId', (req, res, next) => {
   const courseId = req.params.courseId;
 
@@ -120,7 +125,6 @@ app.get('/catalog/:courseId', (req, res, next) => {
 
     case 'time':
     default:
-      // Keep the original section order.
       break;
   }
 
@@ -133,14 +137,29 @@ app.get('/catalog/:courseId', (req, res, next) => {
   });
 });
 
-// Catch requests that do not match an existing route
+
+const addVisitCount = (req, res, next) => {
+  res.locals.visitCount = 42;
+  next();
+};
+
+
+app.get('/welcome', addVisitCount, (req, res) => {
+  res.send(`
+    <h1>Welcome!</h1>
+    <p>Current time: ${res.locals.timestamp}</p>
+    <p>Visitor count: ${res.locals.visitCount}</p>
+  `);
+});
+
+
 app.use((req, res, next) => {
   const err = new Error('Page Not Found');
   err.status = 404;
   next(err);
 });
 
-// Global error handler
+
 app.use((err, req, res, next) => {
   console.error(err.stack || err.message);
 
@@ -173,7 +192,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Development WebSocket server for live reloading
+// Development WebSocket server
 if (NODE_ENV.includes('dev')) {
   try {
     const ws = await import('ws');
@@ -192,7 +211,7 @@ if (NODE_ENV.includes('dev')) {
   }
 }
 
-// Start Express
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://127.0.0.1:${PORT}`);
 });
