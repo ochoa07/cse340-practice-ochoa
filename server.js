@@ -37,6 +37,53 @@ app.get('/products', (req, res) => {
   res.render('products', { title });
 });
 
+// Test route for a 500 error
+app.get('/test-error', (req, res, next) => {
+  const err = new Error('This is a test error');
+  err.status = 500;
+  next(err);
+});
+
+// Catch requests that do not match an existing route
+app.use((req, res, next) => {
+  const err = new Error('Page Not Found');
+  err.status = 404;
+  next(err);
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack || err.message);
+
+  if (res.headersSent) {
+    return next(err);
+  }
+
+  const status = err.status || 500;
+  const template = status === 404 ? '404' : '500';
+
+  const context = {
+    title: status === 404 ? 'Page Not Found' : 'Server Error',
+    error: NODE_ENV === 'production'
+      ? 'An error occurred'
+      : err.message,
+    stack: NODE_ENV === 'production' ? null : err.stack,
+    NODE_ENV
+  };
+
+  res.status(status).render(`errors/${template}`, context, (renderErr, html) => {
+    if (renderErr) {
+      console.error('Error rendering error page:', renderErr);
+
+      return res.status(status).send(
+        `<h1>Error ${status}</h1><p>An error occurred.</p>`
+      );
+    }
+
+    res.send(html);
+  });
+});
+
 // Development WebSocket server for live reloading
 if (NODE_ENV.includes('dev')) {
   try {
