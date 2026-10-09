@@ -27,7 +27,7 @@ const addLocalVariables = (req, res, next) => {
   res.locals.bodyClass =
     themes[Math.floor(Math.random() * themes.length)];
 
-  // Keep the timestamp used by your welcome page.
+  // Keep the timestamp used by the welcome page
   res.locals.timestamp = new Date().toISOString();
 
   next();

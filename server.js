@@ -13,25 +13,25 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// Configure static files and EJS.
+// Configure static files and EJS
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
 
-// Make shared values available to EJS templates.
+// Make shared values available to EJS templates
 app.use(addLocalVariables);
 
-// Connect the routes.
+// Connect the routes
 app.use('/', routes);
 
-// Handle addresses that do not exist.
+// Handle addresses that do not exist
 app.use((req, res, next) => {
   const err = new Error('Page Not Found');
   err.status = 404;
   next(err);
 });
 
-// Handle errors.
+// Handle errors
 app.use((err, req, res, next) => {
   if (res.headersSent) {
     return next(err);
@@ -68,7 +68,7 @@ app.use((err, req, res, next) => {
   );
 });
 
-// Start the development WebSocket server for live reloading.
+// Start the development WebSocket server for live reloading
 if (NODE_ENV.includes('dev')) {
   try {
     const ws = await import('ws');
@@ -87,7 +87,7 @@ if (NODE_ENV.includes('dev')) {
   }
 }
 
-// Start the Express server.
+// Start the Express server
 app.listen(PORT, () => {
   console.log(`Server is running on http://127.0.0.1:${PORT}`);
 });
