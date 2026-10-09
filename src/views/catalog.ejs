@@ -2,25 +2,45 @@
 
 <main>
   <h1>Course Catalog</h1>
-  <p>Browse our courses. Click a course to see its sections and instructors.</p>
+
+  <p class="page-intro">
+    Explore our courses and view available class sections.
+  </p>
+
+  <p class="course-count">
+    <%= Object.keys(courses).length %> courses
+  </p>
 
   <div class="course-list">
     <% Object.values(courses).forEach(course => { %>
-      <div class="course-card">
-        <h3>
+      <article class="course-card">
+        <span class="course-code"><%= course.id %></span>
+
+        <p class="course-department">
+          <%= course.department %>
+        </p>
+
+        <h2>
           <a href="/catalog/<%= course.id %>">
             <%= course.title %>
           </a>
-        </h3>
-
-        <p class="course-id">
-          <%= course.id %> • <%= course.credits %> credits
-        </p>
+        </h2>
 
         <p class="course-description">
           <%= course.description %>
         </p>
-      </div>
+
+        <div class="course-card-footer">
+          <span><%= course.credits %> credits</span>
+
+          <a
+            class="text-link"
+            href="/catalog/<%= course.id %>"
+          >
+            View sections <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
     <% }); %>
   </div>
 </main>

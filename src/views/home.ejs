@@ -1,8 +1,75 @@
 <%- include('partials/header') %>
 
 <main>
-  <h1><%= title %></h1>
-  <p>Welcome! This is the home page of my website.</p>
+  <section class="hero" aria-labelledby="home-heading">
+    <div>
+      <p class="eyebrow">CSE 340 / Course Explorer</p>
+
+      <h1 id="home-heading">
+        Welcome to my learning space
+      </h1>
+
+      <p class="hero-description">
+        Explore courses, view class sections, and get to
+        know a little about me.
+      </p>
+
+      <div class="hero-actions">
+        <a class="button" href="/catalog">
+          Browse courses
+        </a>
+
+        <a class="text-link" href="/about">
+          About me <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="course-preview" aria-label="Featured courses">
+      <div class="preview-item">
+        <span>CS121</span>
+        <h3>Introduction to Programming</h3>
+      </div>
+
+      <div class="preview-item">
+        <span>MATH113</span>
+        <h3>College Algebra</h3>
+      </div>
+
+      <div class="preview-item">
+        <span>ENG101</span>
+        <h3>College Writing</h3>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-links" aria-label="Explore this website">
+    <article class="feature-card">
+      <h2>Explore the catalog</h2>
+
+      <p>
+        Browse courses, check class sections, and see
+        who teaches each class.
+      </p>
+
+      <a class="text-link" href="/catalog">
+        View catalog <span aria-hidden="true">→</span>
+      </a>
+    </article>
+
+    <article class="feature-card">
+      <h2>Meet Chelsea</h2>
+
+      <p>
+        Learn a little about my background, interests,
+        and goals.
+      </p>
+
+      <a class="text-link" href="/about">
+        About me <span aria-hidden="true">→</span>
+      </a>
+    </article>
+  </section>
 </main>
 
 <%- include('partials/footer') %>

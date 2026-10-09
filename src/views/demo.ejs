@@ -1,21 +1,40 @@
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %></title>
-  <link rel="stylesheet" href="/css/main.css">
-</head>
-<body class="<%= bodyClass %>">
-  <main>
-    <h1><%= title %></h1>
+<%- include('partials/header') %>
 
-    <%- greeting %>
+<main class="<%= bodyClass %>">
+  <p class="eyebrow">CSE 340 / Middleware</p>
 
-    <p>Current year: <%= currentYear %></p>
-    <p>Current time: <%= timestamp %></p>
-    <p>Environment: <%= NODE_ENV %></p>
+  <h1><%= title %></h1>
 
-    <a href="/">Back to Home</a>
-  </main>
-</body>
-</html>
+  <p class="page-intro">
+    This page shows the values added by our middleware.
+  </p>
+
+  <section class="demo-panel" aria-label="Middleware values">
+    <div class="demo-greeting">
+      <%- greeting %>
+    </div>
+
+    <dl class="demo-values">
+      <div>
+        <dt>Current year</dt>
+        <dd><%= currentYear %></dd>
+      </div>
+
+      <div>
+        <dt>Current time</dt>
+        <dd><%= timestamp %></dd>
+      </div>
+
+      <div>
+        <dt>Environment</dt>
+        <dd><%= NODE_ENV %></dd>
+      </div>
+    </dl>
+  </section>
+
+  <div class="navigation">
+    <a href="/">← Back to Home</a>
+  </div>
+</main>
+
+<%- include('partials/footer') %>

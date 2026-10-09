@@ -1,16 +1,24 @@
 <%- include('../partials/header') %>
 
-<main>
-  <h1>Page Not Found</h1>
-  <p>The page you are looking for does not exist.</p>
+<main class="error-page">
+  <p class="error-code">404</p>
 
-  <img
-    src="/images/404.webp"
-    alt="Page not found"
-    style="max-width: 100%; width: 350px;"
-  >
+  <h1>Page not found</h1>
 
-  <p>Return to the <a href="/">homepage</a> to continue browsing.</p>
+  <img class="error-image" src="/images/404.webp" alt="Confused person looking around">
+
+  <p class="error-message">
+    We couldn’t find this page. You can head back home
+    or explore the course catalog.
+  </p>
+
+  <div class="error-actions">
+    <a class="button" href="/">Back to Home</a>
+
+    <a class="text-link" href="/catalog">
+      Browse courses <span aria-hidden="true">→</span>
+    </a>
+  </div>
 </main>
 
 <%- include('../partials/footer') %>
