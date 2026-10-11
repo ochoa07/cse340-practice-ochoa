@@ -8,6 +8,11 @@ import {
 } from './catalog/catalog.js';
 
 import {
+  facultyListPage,
+  facultyDetailPage
+} from './faculty/faculty.js';
+
+import {
   homePage,
   aboutPage,
   demoPage,
@@ -21,6 +26,9 @@ router.get('/about', aboutPage);
 
 router.get('/catalog', catalogPage);
 router.get('/catalog/:courseId', courseDetailPage);
+
+router.get('/faculty', facultyListPage);
+router.get('/faculty/:facultyId', facultyDetailPage);
 
 router.get('/demo', addDemoHeaders, demoPage);
 

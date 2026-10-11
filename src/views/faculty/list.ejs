@@ -1,0 +1,66 @@
+<%- include('../partials/header') %>
+
+<main>
+  <h1>Faculty Directory</h1>
+
+  <p class="page-intro">
+    Meet our faculty and view their contact information.
+  </p>
+
+  <form action="/faculty" method="get">
+    <label for="sort">Sort by:</label>
+
+    <select id="sort" name="sort">
+      <option value="name"
+        <%= currentSort === 'name' ? 'selected' : '' %>>
+        Name
+      </option>
+
+      <option value="department"
+        <%= currentSort === 'department' ? 'selected' : '' %>>
+        Department
+      </option>
+
+      <option value="title"
+        <%= currentSort === 'title' ? 'selected' : '' %>>
+        Title
+      </option>
+    </select>
+
+    <button type="submit">Sort</button>
+  </form>
+
+  <p class="course-count">
+    <%= faculty.length %> faculty members
+  </p>
+
+  <div class="course-list">
+    <% faculty.forEach(member => { %>
+      <article class="course-card">
+        <p class="course-department">
+          <%= member.department %>
+        </p>
+
+        <h2>
+          <a href="/faculty/<%= member.id %>">
+            <%= member.name %>
+          </a>
+        </h2>
+
+        <p><%= member.title %></p>
+
+        <div class="course-card-footer">
+          <a class="text-link" href="/faculty/<%= member.id %>">
+            View profile <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+    <% }); %>
+  </div>
+
+  <p>
+    <a class="text-link" href="/">Back to Home</a>
+  </p>
+</main>
+
+<%- include('../partials/footer') %>
