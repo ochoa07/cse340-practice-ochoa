@@ -4,6 +4,7 @@ import path from 'path';
 
 import routes from './src/controllers/routes.js';
 import { addLocalVariables } from './src/middleware/global.js';
+import { setupDatabase, testConnection } from './src/models/setup.js';
 
 const PORT = process.env.PORT || 3000;
 const NODE_ENV = (process.env.NODE_ENV || 'production').toLowerCase();
@@ -87,7 +88,16 @@ if (NODE_ENV.includes('dev')) {
   }
 }
 
-// Start the Express server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://127.0.0.1:${PORT}`);
-});
+// Set up the database, then start the Express server
+try {
+  await setupDatabase();
+  await testConnection();
+
+  app.listen(PORT, () => {
+    console.log(`Server is running on http://127.0.0.1:${PORT}`);
+  });
+} catch (error) {
+  console.error('Database startup failed:', error.message);
+  process.exit(1);
+
+}
