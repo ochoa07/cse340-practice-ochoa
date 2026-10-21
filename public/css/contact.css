@@ -1,0 +1,103 @@
+.contact-form {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 1px solid #e4def2;
+  border-radius: 12px;
+  background-color: #fff;
+}
+
+.contact-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.contact-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #29213d;
+}
+
+.contact-form input,
+.contact-form textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d7cfe5;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: 2px solid #6941c6;
+  outline-offset: 2px;
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 150px;
+}
+
+.contact-form button[type="submit"] {
+  width: 100%;
+  padding: 1rem;
+  background-color: #6941c6;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.contact-form button[type="submit"]:hover {
+  background-color: #53329f;
+}
+
+.contact-form button[type="submit"]:focus-visible {
+  outline: 2px solid #6941c6;
+  outline-offset: 3px;
+}
+
+.contact-responses {
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+.contact-responses .response-item {
+  background-color: #fff;
+  border: 1px solid #e4def2;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.contact-responses .response-subject {
+  color: #6941c6;
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  overflow-wrap: anywhere;
+}
+
+.contact-responses .response-message {
+  color: #333;
+  line-height: 1.6;
+  margin: 0 0 1rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.contact-responses .response-date {
+  color: #666;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.no-responses {
+  text-align: center;
+  color: #666;
+  padding: 2rem;
+}

@@ -1,0 +1,30 @@
+<%- include('../../partials/header') %>
+
+<main>
+  <h1>Contact Form Submissions</h1>
+
+  <div class="contact-responses">
+    <% if (contactForms && contactForms.length > 0) { %>
+      <% contactForms.forEach(form => { %>
+        <article class="response-item">
+          <h2 class="response-subject"><%= form.subject %></h2>
+
+          <p class="response-message"><%= form.message %></p>
+
+          <p class="response-date">
+            Submitted:
+            <%= new Date(form.submitted).toLocaleDateString() %>
+          </p>
+        </article>
+      <% }); %>
+    <% } else { %>
+      <p class="no-responses">No contact form submissions yet.</p>
+    <% } %>
+  </div>
+
+  <p>
+    <a href="/contact">Back to Contact Form</a>
+  </p>
+</main>
+
+<%- include('../../partials/footer') %>
