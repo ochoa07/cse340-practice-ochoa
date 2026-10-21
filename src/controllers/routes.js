@@ -20,6 +20,17 @@ import {
 } from './index.js';
 
 const router = Router();
+// Load catalog styles for catalog pages
+router.use('/catalog', (req, res, next) => {
+  res.addStyle('<link rel="stylesheet" href="/css/catalog.css">');
+  next();
+});
+
+// Load faculty styles for faculty pages
+router.use('/faculty', (req, res, next) => {
+  res.addStyle('<link rel="stylesheet" href="/css/faculty.css">');
+  next();
+});
 
 router.get('/', homePage);
 router.get('/about', aboutPage);
