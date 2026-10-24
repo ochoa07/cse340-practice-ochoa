@@ -2,9 +2,13 @@ import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
+import session from 'express-session';
+import connectPgSimple from 'connect-pg-simple';
+
 import routes from './src/controllers/routes.js';
 import { addLocalVariables } from './src/middleware/global.js';
 import { setupDatabase, testConnection } from './src/models/setup.js';
+import { startSessionCleanup } from './src/utils/session-cleanup.js';
 
 const PORT = process.env.PORT || 3000;
 const NODE_ENV = (process.env.NODE_ENV || 'production').toLowerCase();
@@ -13,6 +17,28 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+
+// Store sessions in PostgreSQL
+const pgSession = connectPgSimple(session);
+
+app.use(session({
+  store: new pgSession({
+    conObject: {
+      connectionString: process.env.DB_URL
+    },
+    tableName: 'session',
+    createTableIfMissing: true
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: !NODE_ENV.includes('dev'),
+    httpOnly: true,
+    sameSite: 'lax',
+    maxAge: 24 * 60 * 60 * 1000
+  }
+}));
 
 // Configure static files and EJS
 app.use(express.static(path.join(__dirname, 'public')));
@@ -95,6 +121,7 @@ if (NODE_ENV.includes('dev')) {
 try {
   await setupDatabase();
   await testConnection();
+  startSessionCleanup();
 
   app.listen(PORT, () => {
     console.log(`Server is running on http://127.0.0.1:${PORT}`);

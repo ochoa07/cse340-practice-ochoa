@@ -60,6 +60,9 @@ const addLocalVariables = (req, res, next) => {
 
   setHeadAssetsFunctionality(res);
 
+  // Let templates know whether the user is logged in
+  res.locals.isLoggedIn = Boolean(req.session && req.session.user);
+
   next();
 };
 

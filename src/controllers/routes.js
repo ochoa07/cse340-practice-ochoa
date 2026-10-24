@@ -12,6 +12,12 @@ import contactRoutes from './forms/contact.js';
 
 import registrationRoutes from './forms/registration.js';
 
+import loginRoutes, { processLogout, showDashboard } from './forms/login.js';
+
+import { requireLogin } from '../middleware/auth.js';
+
+
+
 const router = Router();
 // Load catalog styles for catalog pages
 router.use('/catalog', (req, res, next) => {
@@ -37,6 +43,12 @@ router.use('/register', (req, res, next) => {
   next();
 });
 
+// Load styles for login pages
+router.use('/login', (req, res, next) => {
+  res.addStyle('<link rel="stylesheet" href="/css/login.css">');
+  next();
+});
+
 router.get('/', homePage);
 router.get('/about', aboutPage);
 
@@ -55,5 +67,15 @@ router.use('/contact', contactRoutes);
 
 // Registration routes
 router.use('/register', registrationRoutes);
+
+// Login form and submission
+router.use('/login', loginRoutes);
+
+// Logout and protected dashboard
+router.get('/logout', processLogout);
+router.get('/dashboard', requireLogin, (req, res, next) => {
+  res.addStyle('<link rel="stylesheet" href="/css/login.css">');
+  next();
+}, showDashboard);
 
 export default router;
