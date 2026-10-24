@@ -1,0 +1,79 @@
+<%- include('../../partials/header') %>
+
+<main>
+  <h1><%= title %></h1>
+
+  <p>Create an account below. All fields are required.</p>
+
+  <form method="POST" action="/register" class="registration-form">
+    <div class="form-group">
+      <label for="name">Full Name</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        minlength="2"
+        placeholder="Your full name"
+        required
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="Your email address"
+        required
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="emailConfirm">Confirm Email</label>
+      <input
+        type="email"
+        id="emailConfirm"
+        name="emailConfirm"
+        placeholder="Enter your email again"
+        required
+      >
+    </div>
+
+     <div class="form-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        minlength="8"
+        pattern="(?=.*[0-9])(?=.*[!@#$%^&*]).*"
+        autocomplete="new-password"
+        aria-describedby="password-help"
+        required
+      >
+      <div id="password-help" class="help-text">
+        Use at least 8 characters, including a number and
+        one special character: ! @ # $ % ^ &amp; *
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="passwordConfirm">Confirm Password</label>
+      <input
+        type="password"
+        id="passwordConfirm"
+        name="passwordConfirm"
+        minlength="8"
+        pattern="(?=.*[0-9])(?=.*[!@#$%^&*]).*"
+        autocomplete="new-password"
+        required
+      >
+    </div>
+
+    <button type="submit">Create Account</button>
+
+  </form>
+</main>
+
+<%- include('../../partials/footer') %>

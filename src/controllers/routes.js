@@ -10,6 +10,8 @@ import { homePage, aboutPage, demoPage, testErrorPage } from './index.js';
 
 import contactRoutes from './forms/contact.js';
 
+import registrationRoutes from './forms/registration.js';
+
 const router = Router();
 // Load catalog styles for catalog pages
 router.use('/catalog', (req, res, next) => {
@@ -29,6 +31,12 @@ router.use('/contact', (req, res, next) => {
   next();
 });
 
+// Load styles for registration pages
+router.use('/register', (req, res, next) => {
+  res.addStyle('<link rel="stylesheet" href="/css/registration.css">');
+  next();
+});
+
 router.get('/', homePage);
 router.get('/about', aboutPage);
 
@@ -44,5 +52,8 @@ router.get('/test-error', testErrorPage);
 
 // Contact form routes
 router.use('/contact', contactRoutes);
+
+// Registration routes
+router.use('/register', registrationRoutes);
 
 export default router;
