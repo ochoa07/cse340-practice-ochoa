@@ -7,6 +7,7 @@ import connectPgSimple from 'connect-pg-simple';
 
 import routes from './src/controllers/routes.js';
 import { addLocalVariables } from './src/middleware/global.js';
+import { notFound, errorHandler } from './src/middleware/error-handler.js';
 import { setupDatabase, testConnection } from './src/models/setup.js';
 import { startSessionCleanup } from './src/utils/session-cleanup.js';
 
@@ -54,49 +55,9 @@ app.use(addLocalVariables);
 // Connect the routes
 app.use('/', routes);
 
-// Handle addresses that do not exist
-app.use((req, res, next) => {
-  const err = new Error('Page Not Found');
-  err.status = 404;
-  next(err);
-});
-
-// Handle errors
-app.use((err, req, res, next) => {
-  if (res.headersSent) {
-    return next(err);
-  }
-
-  console.error(err.stack || err.message);
-
-  const status = err.status || 500;
-  const template = status === 404 ? '404' : '500';
-
-  const context = {
-    title: status === 404 ? 'Page Not Found' : 'Server Error',
-    error: NODE_ENV === 'production'
-      ? 'An error occurred'
-      : err.message,
-    stack: NODE_ENV === 'production' ? null : err.stack,
-    NODE_ENV
-  };
-
-  res.status(status).render(
-    `errors/${template}`,
-    context,
-    (renderErr, html) => {
-      if (renderErr) {
-        console.error('Error rendering error page:', renderErr);
-
-        return res.status(status).send(
-          `<h1>Error ${status}</h1><p>An error occurred.</p>`
-        );
-      }
-
-      res.send(html);
-    }
-  );
-});
+// Handle missing pages and application errors after all routes
+app.use(notFound);
+app.use(errorHandler);
 
 // Start the development WebSocket server for live reloading
 if (NODE_ENV.includes('dev')) {
