@@ -22,7 +22,7 @@
 
       <p>
         <strong>Phone:</strong>
-        <a href="tel:<%= facultyMember.phone %>">
+        <a href="tel:<%= facultyMember.phone.replace(/[^\d+]/g, '') %>">
           <%= facultyMember.phone %>
         </a>
       </p>
