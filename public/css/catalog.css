@@ -47,7 +47,7 @@
 }
 
 /* Course detail heading */
-.course-header {
+.course-header, .faculty-header {
   margin: 0 0 36px;
   padding: 28px;
   background: var(--accent-light);
@@ -55,7 +55,7 @@
   text-align: left;
 }
 
-.course-header h1 {
+.course-header h1, .faculty-header h1 {
   margin-bottom: 12px;
   color: var(--text);
   font-size: clamp(2rem, 4vw, 2.8rem);
@@ -67,7 +67,7 @@
   font-weight: 600;
 }
 
-.course-header .course-description {
+.course-header .course-description, .faculty-header .course-description {
   max-width: 720px;
   margin: 0;
   color: var(--muted);
@@ -179,7 +179,7 @@
     grid-template-columns: 1fr;
   }
 
-  .course-header {
+  .course-header, .faculty-header {
     padding: 22px;
   }
 }
