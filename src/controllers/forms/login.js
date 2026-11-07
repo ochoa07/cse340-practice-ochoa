@@ -14,8 +14,8 @@ const processLogin = async (req, res, next) => {
 
   if (!errors.isEmpty()) {
     for (const error of errors.array()) {
-    req.flash('error', error.msg);
-  }
+      req.flash('error', error.msg);
+    }
 
     return res.redirect('/login');
   }
@@ -23,48 +23,48 @@ const processLogin = async (req, res, next) => {
   const { email, password } = req.body;
 
   try {
-  const user = await findUserByEmail(email);
+    const user = await findUserByEmail(email);
 
-  if (!user) {
-    req.flash('error', 'Email or password is incorrect.');
-    return res.redirect('/login');
-  }
-
-  const passwordMatches = await verifyPassword(password, user.password);
-
-  if (!passwordMatches) {
-    req.flash('error', 'Email or password is incorrect.');
-    return res.redirect('/login');
-  }
-
-  // Create a fresh session after successful login
-  req.session.regenerate((error) => {
-    if (error) {
-      return next(error);
+    if (!user) {
+      req.flash('error', 'Email or password is incorrect.');
+      return res.redirect('/login');
     }
 
-    // Store only account information, never the password hash
-    req.session.user = {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      created_at: user.created_at,
-      roleName: user.roleName
-    };
+    const passwordMatches = await verifyPassword(password, user.password);
 
-    req.session.save((error) => {
+    if (!passwordMatches) {
+      req.flash('error', 'Email or password is incorrect.');
+      return res.redirect('/login');
+    }
+
+    // Create a fresh session after successful login
+    req.session.regenerate((error) => {
       if (error) {
         return next(error);
       }
 
-      console.log('Login successful');
-      return res.redirect('/dashboard');
+      // Store the account details needed by the app
+      req.session.user = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        created_at: user.created_at,
+        roleName: user.roleName
+      };
+
+      req.session.save((error) => {
+        if (error) {
+          return next(error);
+        }
+
+        console.log('Login successful');
+        return res.redirect('/dashboard');
+      });
     });
-  });
-} catch (error) {
-  console.error('Login failed:', error.code || 'Unknown error');
-  return res.redirect('/login');
-}
+  } catch (error) {
+    console.error('Login failed:', error.code || 'Unknown error');
+    return res.redirect('/login');
+  }
 };
 
 // End the login session
@@ -85,7 +85,7 @@ const showDashboard = (req, res) => {
   const user = req.session.user;
   const sessionData = req.session;
 
-  // Ensure password data is never passed to the view
+  // Remove any password field before rendering the dashboard
   if (user && Object.hasOwn(user, 'password')) {
     console.error('Security error: password found in session');
     delete user.password;

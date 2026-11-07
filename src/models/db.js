@@ -23,7 +23,9 @@ const pool = new Pool({
  */
 let db = null;
 
-if (process.env.NODE_ENV.includes('dev') && process.env.ENABLE_SQL_LOGGING === 'true') {
+const NODE_ENV = (process.env.NODE_ENV || 'production').toLowerCase();
+
+if (NODE_ENV.includes('dev') && process.env.ENABLE_SQL_LOGGING === 'true') {
     /**
      * In development mode, we wrap the pool to provide query logging.
      * This helps with debugging by showing all executed queries in the console.

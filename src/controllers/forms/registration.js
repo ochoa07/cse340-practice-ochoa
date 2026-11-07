@@ -2,9 +2,8 @@ import { validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
 import { emailExists, saveUser, getAllUsers, getUserById, updateUser, deleteUser } from '../../models/forms/registration.js';
 
-// Display the registration form
 const showRegistrationForm = (req, res) => {
-  res.render('forms/registration/form', {
+  return res.render('forms/registration/form', {
     title: 'User Registration'
   });
 };
@@ -14,8 +13,8 @@ const processRegistration = async (req, res) => {
 
   if (!errors.isEmpty()) {
     for (const error of errors.array()) {
-    req.flash('error', error.msg);
-  }
+      req.flash('error', error.msg);
+    }
 
     return res.redirect('/register');
   }
@@ -23,36 +22,28 @@ const processRegistration = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-  const alreadyRegistered = await emailExists(email);
+    const alreadyRegistered = await emailExists(email);
 
-  if (alreadyRegistered) {
-    req.flash('error', 'An account with this email already exists.');
-    return res.redirect('/register');
-  }
+    if (alreadyRegistered) {
+      req.flash('error', 'An account with this email already exists.');
+      return res.redirect('/register');
+    }
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await saveUser(name, email, hashedPassword);
 
-  await saveUser(name, email, hashedPassword);
-
-  req.flash('success', 'Your account was created successfully.');
+    req.flash('success', 'Your account was created successfully.');
     return res.redirect('/register/list');
   } catch (error) {
-  console.error('Registration failed:', error.code || 'Unknown error');
+    console.error('Registration failed:', error.code || 'Unknown error');
     return res.redirect('/register');
   }
 };
 
-// Display registered users
 const showAllUsers = async (req, res) => {
-  let users = [];
+  const users = await getAllUsers();
 
-  try {
-    users = await getAllUsers();
-  } catch (error) {
-    console.error('Error retrieving users:', error.code || 'Unknown error');
-  }
-
-  res.render('forms/registration/list', {
+  return res.render('forms/registration/list', {
     title: 'Registered Users',
     users,
     currentUser: req.session?.user
@@ -171,4 +162,4 @@ const processDeleteAccount = async (req, res, next) => {
   }
 };
 
-export { showRegistrationForm, processRegistration, showAllUsers, showEditAccountForm, processEditAccount, processDeleteAccount };
+export { showRegistrationForm, processRegistration, showAllUsers, showEditAccountForm, processEditAccount, processDeleteAccount};
