@@ -39,8 +39,8 @@
       <article class="course-card faculty-card">
         <img
           class="faculty-photo"
-          src="/images/faculty/<%= member.slug %>.jpg"
-          alt="Portrait of <%= member.name %>"
+          src="/images/faculty/<%= member.slug %>.<%= member.slug === 'robert-colvin' ? 'svg' : 'jpg' %>"
+          alt="<%= member.slug === 'robert-colvin' ? 'No portrait available for ' : 'Portrait of ' %><%= member.name %>"
         >
         <div class="faculty-card-info">
         <p class="course-department">

@@ -4,8 +4,8 @@
   <div class="faculty-header faculty-profile-header">
   <img
     class="faculty-photo"
-    src="/images/faculty/<%= facultyMember.slug %>.jpg"
-    alt="Portrait of <%= facultyMember.name %>"
+    src="/images/faculty/<%= facultyMember.slug %>.<%= facultyMember.slug === 'robert-colvin' ? 'svg' : 'jpg' %>"
+    alt="<%= facultyMember.slug === 'robert-colvin' ? 'No portrait available for ' : 'Portrait of ' %><%= facultyMember.name %>"
   >
 
   <div class="faculty-profile-info">
