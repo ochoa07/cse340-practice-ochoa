@@ -421,6 +421,7 @@ footer {
 /* Middleware demo */
 .demo-panel {
   max-width: 720px;
+  margin-inline: auto;
   padding: 28px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -508,4 +509,11 @@ footer {
   max-width: 100%;
   margin: 24px auto;
   border-radius: 12px;
+}
+
+.site-nav a[aria-current="page"] {
+  color: #5427b8;
+  background-color: #f1ebff;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
 }

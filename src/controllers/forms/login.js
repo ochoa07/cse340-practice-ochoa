@@ -1,24 +1,5 @@
-import { body, validationResult } from 'express-validator';
-import {
-  findUserByEmail,
-  verifyPassword
-} from '../../models/forms/login.js';
-import { Router } from 'express';
-
-const router = Router();
-
-// Validate login fields
-const loginValidation = [
-  body('email')
-    .trim()
-    .isEmail()
-    .withMessage('Please provide a valid email address')
-    .normalizeEmail(),
-
-  body('password')
-    .isLength({ min: 8 })
-    .withMessage('Password must be at least 8 characters')
-];
+import { validationResult } from 'express-validator';
+import { findUserByEmail, verifyPassword } from '../../models/forms/login.js';
 
 // Display the login form
 const showLoginForm = (req, res) => {
@@ -32,13 +13,9 @@ const processLogin = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    console.error(
-      'Login validation errors:',
-      errors.array().map(error => ({
-        field: error.path,
-        message: error.msg
-      }))
-    );
+    for (const error of errors.array()) {
+    req.flash('error', error.msg);
+  }
 
     return res.redirect('/login');
   }
@@ -49,14 +26,14 @@ const processLogin = async (req, res, next) => {
   const user = await findUserByEmail(email);
 
   if (!user) {
-    console.log('User not found');
+    req.flash('error', 'Email or password is incorrect.');
     return res.redirect('/login');
   }
 
   const passwordMatches = await verifyPassword(password, user.password);
 
   if (!passwordMatches) {
-    console.log('Invalid password');
+    req.flash('error', 'Email or password is incorrect.');
     return res.redirect('/login');
   }
 
@@ -71,7 +48,8 @@ const processLogin = async (req, res, next) => {
       id: user.id,
       name: user.name,
       email: user.email,
-      created_at: user.created_at
+      created_at: user.created_at,
+      roleName: user.roleName
     };
 
     req.session.save((error) => {
@@ -120,9 +98,4 @@ const showDashboard = (req, res) => {
   });
 };
 
-// Login form and submission
-router.get('/', showLoginForm);
-router.post('/', loginValidation, processLogin);
-
-export default router;
-export { processLogout, showDashboard };
+export { showLoginForm, processLogin, processLogout, showDashboard };

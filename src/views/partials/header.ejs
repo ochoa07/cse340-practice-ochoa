@@ -32,22 +32,59 @@
       <a class="brand" href="/">Chelsea<span>.</span></a>
 
       <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/catalog">Course Catalog</a></li>
-        <li><a href="/faculty">Faculty Directory</a></li>
-        <li><a href="/contact">Contact</a></li>
-        <li><a href="/demo">Middleware Demo</a></li>
+        <li>
+          <a href="/" aria-current="<%= currentPath === '/' ? 'page' : 'false' %>">Home</a>
+        </li>
+        <li>
+          <a href="/about" aria-current="<%= currentPath === '/about' ? 'page' : 'false' %>">About</a>
+        </li>
+        <li>
+          <a href="/catalog" aria-current="<%= currentPath === '/catalog' || currentPath.startsWith('/catalog/') ? 'page' : 'false' %>">Course Catalog</a>
+        </li>
+        <li>
+          <a href="/faculty" aria-current="<%= currentPath === '/faculty' || currentPath.startsWith('/faculty/') ? 'page' : 'false' %>">Faculty Directory</a>
+        </li>
+        <li>
+          <a href="/contact" aria-current="<%= currentPath === '/contact' ? 'page' : 'false' %>">Contact</a>
+        </li>
+        <li>
+          <a href="/demo" aria-current="<%= currentPath === '/demo' ? 'page' : 'false' %>">Middleware Demo</a>
+        </li>
 
         <% if (isLoggedIn) { %>
-          <li><a href="/dashboard">Dashboard</a></li>
-          <li><a href="/register/list">All Users</a></li>
-          <li><a href="/contact/responses">Contact Responses</a></li>
+          <li>
+            <a href="/dashboard" aria-current="<%= currentPath === '/dashboard' ? 'page' : 'false' %>">Dashboard</a>
+          </li>
+          <li>
+            <a href="/register/list" aria-current="<%= currentPath === '/register/list' || /^\/register\/\d+\/edit\/?$/.test(currentPath) ? 'page' : 'false' %>">All Users</a>
+          </li>
+          <li>
+            <a href="/contact/responses" aria-current="<%= currentPath === '/contact/responses' ? 'page' : 'false' %>">Contact Responses</a>
+          </li>
           <li><a href="/logout">Logout</a></li>
         <% } else { %>
-          <li><a href="/login">Login</a></li>
-          <li><a href="/register">Register</a></li>
+          <li>
+            <a href="/login" aria-current="<%= currentPath === '/login' ? 'page' : 'false' %>">Login</a>
+          </li>
+          <li>
+            <a href="/register" aria-current="<%= currentPath === '/register' ? 'page' : 'false' %>">Register</a>
+          </li>
         <% } %>
       </ul>
     </nav>
   </header>
+  <% if (successMessages.length > 0) { %>
+  <div class="flash-messages" role="status">
+      <% successMessages.forEach(message => { %>
+        <p class="flash-success"><%= message %></p>
+      <% }); %>
+    </div>
+  <% } %>
+
+  <% if (errorMessages.length > 0) { %>
+    <div class="flash-messages" role="alert">
+      <% errorMessages.forEach(message => { %>
+        <p class="flash-error"><%= message %></p>
+      <% }); %>
+    </div>
+  <% } %>

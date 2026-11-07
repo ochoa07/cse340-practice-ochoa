@@ -1,12 +1,19 @@
 <%- include('../partials/header') %>
 
 <main>
-  <div class="faculty-header">
-    <h1><%= facultyMember.name %></h1>
+  <div class="faculty-header faculty-profile-header">
+  <img
+    class="faculty-photo"
+    src="/images/faculty/<%= facultyMember.slug %>.jpg"
+    alt="Portrait of <%= facultyMember.name %>"
+  >
 
+  <div class="faculty-profile-info">
+    <h1><%= facultyMember.name %></h1>
     <p class="course-meta">
       <%= facultyMember.department %> • <%= facultyMember.title %>
     </p>
+  </div>
   </div>
 
   <section class="sections">

@@ -1,22 +1,13 @@
 import { Router } from 'express';
-
 import { addDemoHeaders } from '../middleware/demo/headers.js';
-
 import { catalogPage, courseDetailPage } from './catalog/catalog.js';
-
 import { facultyListPage, facultyDetailPage } from './faculty/faculty.js';
-
 import { homePage, aboutPage, demoPage, testErrorPage } from './index.js';
-
-import contactRoutes from './forms/contact.js';
-
-import registrationRoutes from './forms/registration.js';
-
-import loginRoutes, { processLogout, showDashboard } from './forms/login.js';
-
-import { requireLogin } from '../middleware/auth.js';
-
-
+import { showContactForm, handleContactSubmission, showContactResponses } from './forms/contact.js';
+import { contactValidation, registrationValidation, loginValidation, updateAccountValidation } from '../middleware/validation/forms.js';
+import { showRegistrationForm, processRegistration, showAllUsers, showEditAccountForm, processEditAccount, processDeleteAccount } from './forms/registration.js';
+import { showLoginForm, processLogin, processLogout, showDashboard } from './forms/login.js';
+import { requireLogin, requireRole } from '../middleware/auth.js';
 
 const router = Router();
 // Load catalog styles for catalog pages
@@ -63,13 +54,21 @@ router.get('/demo', addDemoHeaders, demoPage);
 router.get('/test-error', testErrorPage);
 
 // Contact form routes
-router.use('/contact', contactRoutes);
+router.get('/contact', showContactForm);
+router.post('/contact', contactValidation, handleContactSubmission);
+router.get('/contact/responses', showContactResponses);
 
 // Registration routes
-router.use('/register', registrationRoutes);
+router.get('/register', showRegistrationForm);
+router.post('/register', registrationValidation, processRegistration);
+router.get('/register/list', showAllUsers);
+router.get('/register/:id/edit', requireLogin, showEditAccountForm);
+router.post('/register/:id/edit', requireLogin, updateAccountValidation, processEditAccount);
+router.post('/register/:id/delete', requireRole('admin'), processDeleteAccount);
 
 // Login form and submission
-router.use('/login', loginRoutes);
+router.get('/login', showLoginForm);
+router.post('/login', loginValidation, processLogin);
 
 // Logout and protected dashboard
 router.get('/logout', processLogout);

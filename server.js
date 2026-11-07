@@ -4,6 +4,7 @@ import path from 'path';
 
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
+import flash from 'connect-flash';
 
 import routes from './src/controllers/routes.js';
 import { addLocalVariables } from './src/middleware/global.js';
@@ -41,21 +42,34 @@ app.use(session({
   }
 }));
 
+// Enable session-based flash messages
+app.use(flash());
+
 // Configure static files and EJS
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'src/views'));
+
 // Read submitted form data and JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'src/views'));
 
 // Make shared values available to EJS templates
 app.use(addLocalVariables);
 
+// Read flash messages once for each page request
+app.use((req, res, next) => {
+  res.locals.currentPath = req.path;
+  res.locals.successMessages = req.flash('success');
+  res.locals.errorMessages = req.flash('error');
+  next();
+});
+
 // Connect the routes
 app.use('/', routes);
 
-// Handle missing pages and application errors after all routes
+// Handle missing pages and application errors
 app.use(notFound);
 app.use(errorHandler);
 
@@ -90,5 +104,4 @@ try {
 } catch (error) {
   console.error('Database startup failed:', error.message);
   process.exit(1);
-
 }

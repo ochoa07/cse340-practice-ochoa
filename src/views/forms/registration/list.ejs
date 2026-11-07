@@ -8,8 +8,23 @@
       <% users.forEach(user => { %>
         <div class="user-card">
             <div class="user-header">
-            <h3><%= user.name %></h3>
-            <span class="user-id">ID: <%= user.id %></span>
+              <h3><%= user.name %></h3>
+
+              <% if (currentUser && (currentUser.id === user.id || currentUser.roleName === 'admin')) { %>
+                <a href="/register/<%= user.id %>/edit">Edit</a>
+              <% } %>
+
+              <% if (currentUser && currentUser.roleName === 'admin' && currentUser.id !== user.id) { %>
+                <form
+                  method="post"
+                  action="/register/<%= user.id %>/delete"
+                  onsubmit="return confirm('Delete this account?');"
+                >
+                  <button type="submit">Delete</button>
+                </form>
+              <% } %>
+
+              <span class="user-id">ID: <%= user.id %></span>
             </div>
 
             <div class="user-details">

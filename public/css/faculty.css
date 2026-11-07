@@ -189,3 +189,61 @@
     transition: none;
   }
 }
+
+.faculty-photo {
+  display: block;
+  width: 180px;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  margin-bottom: 7px;
+  background: url('https://placehold.co/480') center / cover no-repeat;
+}
+
+.faculty-card {
+  display: grid;
+  grid-template-columns: min(35%, 180px) minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+}
+
+.faculty-card .faculty-photo {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+@media (max-width: 480px) {
+  .faculty-card {
+    grid-template-columns: 1fr;
+  }
+
+  .faculty-card .faculty-photo {
+    width: 180px;
+  }
+}
+
+.faculty-profile-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.faculty-profile-header .faculty-photo {
+  margin-bottom: 0;
+  border-radius: 0.75rem;
+}
+
+.faculty-profile-info {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+.faculty-profile-info h1,
+.faculty-profile-info p {
+  margin: 0;
+}
+
+.faculty-profile-info p {
+  margin-top: 0.5rem;
+}

@@ -36,7 +36,13 @@
 
   <div class="course-list">
     <% faculty.forEach(member => { %>
-      <article class="course-card">
+      <article class="course-card faculty-card">
+        <img
+          class="faculty-photo"
+          src="/images/faculty/<%= member.slug %>.jpg"
+          alt="Portrait of <%= member.name %>"
+        >
+        <div class="faculty-card-info">
         <p class="course-department">
           <%= member.department %>
         </p>
@@ -53,6 +59,7 @@
           <a class="text-link" href="/faculty/<%= member.slug %>">
             View profile <span aria-hidden="true">→</span>
           </a>
+        </div>
         </div>
       </article>
     <% }); %>
